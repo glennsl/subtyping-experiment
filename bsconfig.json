@@ -1,0 +1,7 @@
+{
+  "name": "subtyping-experiment",
+  "ppx-flags": ["reactjs_jsx_ppx"],
+  "sources": [
+    "src"
+  ],
+}

@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "scripts": {
+    "start": "bsb -make-world -w"
+  },
+  "devDependencies": {
+    "bs-platform": "https://github.com/bloomberg/bucklescript.git"
+  },
+  "dependencies": {
+  }
+}
