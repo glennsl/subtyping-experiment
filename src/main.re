@@ -54,10 +54,11 @@ let _ = Dom.HtmlElement.consume next; /* this shouldn't typecheck */
 
 Generates the error:
 
-Error: This expression has type unit Dom.node = Dom.node_ * unit
+Error: This expression has type
+         unit Dom.element = Dom.node_ * (Dom.element_ * unit)
        but an expression was expected of type
-         'a Dom.element = Dom.node_ * (Dom.element_ * 'a)
-       Type unit is not compatible with type Dom.element_ * 'a
+         Dom.htmlElement = Dom.node_ * (Dom.element_ * Dom.htmlElement_)
+       Type unit is not compatible with type Dom.htmlElement_
 */
 
 let _ = Dom.Element.consume next;
