@@ -1,31 +1,27 @@
 module Dom = {
-  type node_like 'a;
-  type node = node_like unit;
-  type element_tag 'a;
-  type element_like 'a = node_like (element_tag 'a);
-  type element = element_like unit;
-  type htmlElement_tag;
-  type htmlElement = element_like htmlElement_tag;
-  type document_tag 'a;
-  type document_like 'a = node_like (document_tag 'a);
-  type document = document_like unit;
-  type htmlDocument_tag;
-  type htmlDocument = document_like htmlDocument_tag;
-
-
+  type node_;
+  type node 'ext = (node_, 'ext);
+  type element_;
+  type element 'ext = node (element_, 'ext);
+  type htmlElement_;
+  type htmlElement = element htmlElement_;
+  type document_;
+  type document 'ext = node (document_, 'ext);
+  type htmlDocument_;
+  type htmlDocument = document htmlDocument_;
 
   module Node = {
-    external make : unit => node = "" [@@bs.val];
+    external make : unit => node 'ext = "" [@@bs.val];
 
-    external consume : node_like 'a => unit = "" [@@bs.val];
+    external consume : node 'ext => unit = "" [@@bs.val];
   };
 
   module Element = {
-    external make : unit => element = "" [@@bs.val];
+    external make : unit => element 'ext = "" [@@bs.val];
 
-    external consume : element_like 'a => unit = "" [@@bs.val];
+    external consume : element 'ext => unit = "" [@@bs.val];
 
-    external nextElement : element = "" [@@bs.send.pipe: element_like 'a];
+    external nextElement : element 'ext = "" [@@bs.send.pipe: element 'ext];
   };
 
   module HtmlElement = {
@@ -37,14 +33,14 @@ module Dom = {
 
 let node = Dom.Node.make ();
 let _ = Dom.Node.consume node;
-/*
+
 let _ = Dom.Element.consume node; /* this shouldn't typecheck */
-*/
+
 let htmlElement = Dom.HtmlElement.make ();
 let _ = Dom.Node.consume htmlElement;
 
 let next = Dom.Element.nextElement htmlElement;
-/*
+
 let _ = Dom.HtmlElement.consume next; /* this shouldn't typecheck */
-*/
+
 let _ = Dom.Element.consume next;
