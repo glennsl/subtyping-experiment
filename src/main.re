@@ -11,17 +11,17 @@ module Dom = {
   type htmlDocument = document htmlDocument_;
 
   module Node = {
-    external make : unit => node 'ext = "" [@@bs.val];
+    external make : unit => node unit = "" [@@bs.val];
 
     external consume : node 'ext => unit = "" [@@bs.val];
   };
 
   module Element = {
-    external make : unit => element 'ext = "" [@@bs.val];
+    external make : unit => element unit = "" [@@bs.val];
 
     external consume : element 'ext => unit = "" [@@bs.val];
 
-    external nextElement : element 'ext = "" [@@bs.send.pipe: element 'ext];
+    external nextElement : element unit = "" [@@bs.send.pipe: element 'ext];
   };
 
   module HtmlElement = {
@@ -34,13 +34,30 @@ module Dom = {
 let node = Dom.Node.make ();
 let _ = Dom.Node.consume node;
 
+/*
 let _ = Dom.Element.consume node; /* this shouldn't typecheck */
+
+Generates the error:
+
+Error: This expression has type unit Dom.node = Dom.node_ * unit
+       but an expression was expected of type
+         'a Dom.element = Dom.node_ * (Dom.element_ * 'a)
+       Type unit is not compatible with type Dom.element_ * 'a
+*/
 
 let htmlElement = Dom.HtmlElement.make ();
 let _ = Dom.Node.consume htmlElement;
 
 let next = Dom.Element.nextElement htmlElement;
-
+/*
 let _ = Dom.HtmlElement.consume next; /* this shouldn't typecheck */
+
+Generates the error:
+
+Error: This expression has type unit Dom.node = Dom.node_ * unit
+       but an expression was expected of type
+         'a Dom.element = Dom.node_ * (Dom.element_ * 'a)
+       Type unit is not compatible with type Dom.element_ * 'a
+*/
 
 let _ = Dom.Element.consume next;
